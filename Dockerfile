@@ -72,11 +72,27 @@ RUN rm -r /tmp/*
 # Create compile scripts
 #---------------------------------------------------
 
+# check-if-gopath-available.sh
+
+RUN echo "if [ ! -d '/root/go/src/github.com/fstab/grok_exporter' ] ; then" >> /root/check-if-gopath-available.sh
+RUN echo "    cat <<EOF >&2" >> /root/check-if-gopath-available.sh
+RUN echo "ERROR: Did not find grok_exporter sources." >> /root/check-if-gopath-available.sh
+RUN echo "This image expectes that the host system's \\\$GOPATH is mounted to '/root/go'." >> /root/check-if-gopath-available.sh
+RUN echo "Start this container with '-v \\\$GOPATH:/root/go', and make sure the sources for" >> /root/check-if-gopath-available.sh
+RUN echo "'github.com/fstab/grok_exporter' are available in the host's '\\\$GOPATH'." >> /root/check-if-gopath-available.sh
+RUN echo "EOF" >> /root/check-if-gopath-available.sh
+RUN echo "    exit 1" >> /root/check-if-gopath-available.sh
+RUN echo "fi" >> /root/check-if-gopath-available.sh
+
+RUN chmod 755 /root/check-if-gopath-available.sh
+
 # compile-win64.sh
 
 RUN echo '#!/bin/bash' >> /root/compile-win64.sh
 RUN echo '' >> /root/compile-win64.sh
 RUN echo 'set -e' >> /root/compile-win64.sh
+RUN echo '' >> /root/compile-win64.sh
+RUN echo '/root/check-if-gopath-available.sh' >> /root/compile-win64.sh
 RUN echo '' >> /root/compile-win64.sh
 RUN echo 'if [[ "$1" == "-o" ]] && [[ ! -z "$2" ]]' >> /root/compile-win64.sh
 RUN echo 'then' >> /root/compile-win64.sh
@@ -89,8 +105,6 @@ RUN echo 'fi' >> /root/compile-win64.sh
 
 RUN chmod 755 /root/compile-win64.sh
 
-ENTRYPOINT /bin/bash
+ENV PATH /root:/root/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
-ENTRYPOINT bash -c 'if [ -d "/root/go/src/github.com/fstab/grok_exporter" ] ; then \
-    echo "Type \"ls\" to see the available compile scripts." && /bin/bash ; else  \
-    echo "Did not find grok_exporter sources. Please run this container with \"-v \$GOPATH:/root/go\" and make sure the sources for \"github.com/fstab/grok_exporter\" are available in \"\$GOPATH\"." >&2 ; fi '
+CMD /root/check-if-gopath-available.sh && echo "Type 'ls' to see the available compile scripts." && /bin/bash
