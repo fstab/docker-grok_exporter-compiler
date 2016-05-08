@@ -100,6 +100,7 @@ RUN echo '    cd /root/go/src/github.com/fstab/grok_exporter' >> /root/compile-w
 RUN echo '    CC=x86_64-w64-mingw32-gcc GOOS=windows GOARCH=amd64 CGO_ENABLED=1 go build -v -o $2 .' >> /root/compile-win64.sh
 RUN echo 'else' >> /root/compile-win64.sh
 RUN echo '    echo "Usage: $(basename "$0") -o <file>" >&2' >> /root/compile-win64.sh
+RUN echo '    echo "Note that <file> is relative to \$GOPATH." >&2' >> /root/compile-win64.sh
 RUN echo '    exit 1' >> /root/compile-win64.sh
 RUN echo 'fi' >> /root/compile-win64.sh
 
