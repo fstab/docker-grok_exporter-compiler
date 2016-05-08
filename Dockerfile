@@ -86,25 +86,45 @@ RUN echo "fi" >> /root/check-if-gopath-available.sh
 
 RUN chmod 755 /root/check-if-gopath-available.sh
 
-# compile-win64.sh
+# compile-windows-amd64.sh
 
-RUN echo '#!/bin/bash' >> /root/compile-win64.sh
-RUN echo '' >> /root/compile-win64.sh
-RUN echo 'set -e' >> /root/compile-win64.sh
-RUN echo '' >> /root/compile-win64.sh
-RUN echo '/root/check-if-gopath-available.sh' >> /root/compile-win64.sh
-RUN echo '' >> /root/compile-win64.sh
-RUN echo 'if [[ "$1" == "-o" ]] && [[ ! -z "$2" ]]' >> /root/compile-win64.sh
-RUN echo 'then' >> /root/compile-win64.sh
-RUN echo '    cd /root/go/src/github.com/fstab/grok_exporter' >> /root/compile-win64.sh
-RUN echo '    CC=x86_64-w64-mingw32-gcc GOOS=windows GOARCH=amd64 CGO_ENABLED=1 go build -v -o $2 .' >> /root/compile-win64.sh
-RUN echo 'else' >> /root/compile-win64.sh
-RUN echo '    echo "Usage: $(basename "$0") -o <file>" >&2' >> /root/compile-win64.sh
-RUN echo '    echo "Note that <file> is relative to \$GOPATH." >&2' >> /root/compile-win64.sh
-RUN echo '    exit 1' >> /root/compile-win64.sh
-RUN echo 'fi' >> /root/compile-win64.sh
+RUN echo '#!/bin/bash' >> /root/compile-windows-amd64.sh
+RUN echo '' >> /root/compile-windows-amd64.sh
+RUN echo 'set -e' >> /root/compile-windows-amd64.sh
+RUN echo '' >> /root/compile-windows-amd64.sh
+RUN echo '/root/check-if-gopath-available.sh' >> /root/compile-windows-amd64.sh
+RUN echo '' >> /root/compile-windows-amd64.sh
+RUN echo 'if [[ "$1" == "-o" ]] && [[ ! -z "$2" ]]' >> /root/compile-windows-amd64.sh
+RUN echo 'then' >> /root/compile-windows-amd64.sh
+RUN echo '    cd /root/go/src/github.com/fstab/grok_exporter' >> /root/compile-windows-amd64.sh
+RUN echo '    CC=x86_64-w64-mingw32-gcc GOOS=windows GOARCH=amd64 CGO_ENABLED=1 go build -o $2 .' >> /root/compile-windows-amd64.sh
+RUN echo 'else' >> /root/compile-windows-amd64.sh
+RUN echo '    echo "Usage: $(basename "$0") -o <file>" >&2' >> /root/compile-windows-amd64.sh
+RUN echo '    echo "Note that <file> is relative to \$GOPATH." >&2' >> /root/compile-windows-amd64.sh
+RUN echo '    exit 1' >> /root/compile-windows-amd64.sh
+RUN echo 'fi' >> /root/compile-windows-amd64.sh
 
-RUN chmod 755 /root/compile-win64.sh
+RUN chmod 755 /root/compile-windows-amd64.sh
+
+# compile-linux-amd64.sh
+
+RUN echo '#!/bin/bash' >> /root/compile-linux-amd64.sh
+RUN echo '' >> /root/compile-linux-amd64.sh
+RUN echo 'set -e' >> /root/compile-linux-amd64.sh
+RUN echo '' >> /root/compile-linux-amd64.sh
+RUN echo '/root/check-if-gopath-available.sh' >> /root/compile-linux-amd64.sh
+RUN echo '' >> /root/compile-linux-amd64.sh
+RUN echo 'if [[ "$1" == "-o" ]] && [[ ! -z "$2" ]]' >> /root/compile-linux-amd64.sh
+RUN echo 'then' >> /root/compile-linux-amd64.sh
+RUN echo '    cd /root/go/src/github.com/fstab/grok_exporter' >> /root/compile-linux-amd64.sh
+RUN echo '    go build -o $2 .' >> /root/compile-linux-amd64.sh
+RUN echo 'else' >> /root/compile-linux-amd64.sh
+RUN echo '    echo "Usage: $(basename "$0") -o <file>" >&2' >> /root/compile-linux-amd64.sh
+RUN echo '    echo "Note that <file> is relative to \$GOPATH." >&2' >> /root/compile-linux-amd64.sh
+RUN echo '    exit 1' >> /root/compile-linux-amd64.sh
+RUN echo 'fi' >> /root/compile-linux-amd64.sh
+
+RUN chmod 755 /root/compile-linux-amd64.sh
 
 ENV PATH /root:/root/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
