@@ -1,7 +1,7 @@
 FROM ubuntu:16.04
 MAINTAINER Fabian Stäber, fabian@fstab.de
 
-ENV LAST_UPDATE=2016-08-21
+ENV LAST_UPDATE=2016-08-23
 
 RUN apt-get update && \
     apt-get upgrade -y
@@ -99,13 +99,13 @@ RUN echo '#!/bin/bash' >> /root/compile-windows-amd64.sh && \
     echo '' >> /root/compile-windows-amd64.sh && \
     echo '/root/check-if-gopath-available.sh' >> /root/compile-windows-amd64.sh && \
     echo '' >> /root/compile-windows-amd64.sh && \
-    echo 'if [[ "$1" == "-o" ]] && [[ ! -z "$2" ]]' >> /root/compile-windows-amd64.sh && \
+    echo 'if [[ "$1" == "-ldflags" ]] && [[ ! -z "$2" ]] && [[ "$3" == "-o" ]] && [[ ! -z "$4" ]]' >> /root/compile-windows-amd64.sh && \
     echo 'then' >> /root/compile-windows-amd64.sh && \
     echo '    cd /root/go/src/github.com/fstab/grok_exporter' >> /root/compile-windows-amd64.sh && \
     echo '    export CGO_LDFLAGS=/usr/x86_64-w64-mingw32/lib/libonig.a' >> /root/compile-windows-amd64.sh && \
-    echo '    CC=x86_64-w64-mingw32-gcc GOOS=windows GOARCH=amd64 CGO_ENABLED=1 go build -o $2 .' >> /root/compile-windows-amd64.sh && \
+    echo '    CC=x86_64-w64-mingw32-gcc GOOS=windows GOARCH=amd64 CGO_ENABLED=1 go build -ldflags "$2" -o "$4" .' >> /root/compile-windows-amd64.sh && \
     echo 'else' >> /root/compile-windows-amd64.sh && \
-    echo '    echo "Usage: $(basename "$0") -o <file>" >&2' >> /root/compile-windows-amd64.sh && \
+    echo '    echo "Usage: $(basename "$0") -ldflags \\"-X name=value\\" -o <file>" >&2' >> /root/compile-windows-amd64.sh && \
     echo '    echo "Note that <file> is relative to \$GOPATH/src/github.com/fstab/grok_exporter." >&2' >> /root/compile-windows-amd64.sh && \
     echo '    exit 1' >> /root/compile-windows-amd64.sh && \
     echo 'fi' >> /root/compile-windows-amd64.sh
@@ -120,13 +120,13 @@ RUN echo '#!/bin/bash' >> /root/compile-linux-amd64.sh && \
     echo '' >> /root/compile-linux-amd64.sh && \
     echo '/root/check-if-gopath-available.sh' >> /root/compile-linux-amd64.sh && \
     echo '' >> /root/compile-linux-amd64.sh && \
-    echo 'if [[ "$1" == "-o" ]] && [[ ! -z "$2" ]]' >> /root/compile-linux-amd64.sh && \
+    echo 'if [[ "$1" == "-ldflags" ]] && [[ ! -z "$2" ]] && [[ "$3" == "-o" ]] && [[ ! -z "$4" ]]' >> /root/compile-linux-amd64.sh && \
     echo 'then' >> /root/compile-linux-amd64.sh && \
     echo '    cd /root/go/src/github.com/fstab/grok_exporter' >> /root/compile-linux-amd64.sh && \
     echo '    export CGO_LDFLAGS=/usr/local/lib/libonig.a' >> /root/compile-linux-amd64.sh && \
-    echo '    go build -o $2 .' >> /root/compile-linux-amd64.sh && \
+    echo '    go build -ldflags "$2" -o "$4" .' >> /root/compile-linux-amd64.sh && \
     echo 'else' >> /root/compile-linux-amd64.sh && \
-    echo '    echo "Usage: $(basename "$0") -o <file>" >&2' >> /root/compile-linux-amd64.sh && \
+    echo '    echo "Usage: $(basename "$0") -ldflags \\"-X name=value\\" -o <file>" >&2' >> /root/compile-linux-amd64.sh && \
     echo '    echo "Note that <file> is relative to \$GOPATH/src/github.com/fstab/grok_exporter." >&2' >> /root/compile-linux-amd64.sh && \
     echo '    exit 1' >> /root/compile-linux-amd64.sh && \
     echo 'fi' >> /root/compile-linux-amd64.sh
