@@ -1,34 +1,28 @@
 FROM ubuntu:16.04
 MAINTAINER Fabian Stäber, fabian@fstab.de
 
-ENV LAST_UPDATE=2016-05-08
-
-#-----------------------------------------------------------------
-# Standard Ubuntu set-up
-#-----------------------------------------------------------------
+ENV LAST_UPDATE=2016-08-21
 
 RUN apt-get update && \
     apt-get upgrade -y
-
-# Set the locale
-RUN locale-gen en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
-
-# Set the timezone
-RUN echo "Europe/Berlin" | tee /etc/timezone
-RUN dpkg-reconfigure --frontend noninteractive tzdata
 
 #-----------------------------------------------------------------
 # Go development
 #-----------------------------------------------------------------
 
 RUN apt-get install -y \
-    golang \
     git \
     wget \
     vim
+
+# Install golang manually, so we get the latest 1.7 version.
+
+RUN cd /usr/local && \
+    wget -nv https://storage.googleapis.com/golang/go1.7.linux-amd64.tar.gz && \
+    tar xfz go1.7.linux-amd64.tar.gz
+
+ENV GOROOT /usr/local/go
+RUN echo 'PATH=$GOROOT/bin:$PATH' >> /root/.bashrc
 
 WORKDIR /root
 RUN mkdir -p go/src/github.com/fstab go/bin go/pkg
@@ -37,20 +31,13 @@ RUN echo 'GOPATH=$HOME/go' >> /root/.bashrc
 RUN echo 'PATH=$GOPATH/bin:$PATH' >> /root/.bashrc
 
 #-----------------------------------------------------------------
-# Install dynamically linked Oniguruma Library for Linux 64 Bit
-#-----------------------------------------------------------------
-
-#RUN apt-get install -y \
-#    build-essential \
-#    libonig-dev
-
-#-----------------------------------------------------------------
 # Create a statically linked Oniguruma library for Windows 64 Bit
 #-----------------------------------------------------------------
 
 RUN apt-get install -y \
     automake \
     automake1.11 \
+    dpkg-dev \
     gcc-mingw-w64-x86-64 \
     libtool
 
@@ -146,6 +133,6 @@ RUN echo '#!/bin/bash' >> /root/compile-linux-amd64.sh && \
 
 RUN chmod 755 /root/compile-linux-amd64.sh
 
-ENV PATH /root:/root/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV PATH /usr/local/go/bin:/root:/root/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 CMD /root/check-if-gopath-available.sh && echo "Type 'ls' to see the available compile scripts." && exec /bin/bash
