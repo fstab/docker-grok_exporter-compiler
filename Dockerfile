@@ -1,7 +1,7 @@
 FROM ubuntu:16.04
 MAINTAINER Fabian Stäber, fabian@fstab.de
 
-ENV LAST_UPDATE=2016-08-23
+ENV LAST_UPDATE=2016-09-01
 
 RUN apt-get update && \
     apt-get upgrade -y
@@ -11,6 +11,7 @@ RUN apt-get update && \
 #-----------------------------------------------------------------
 
 RUN apt-get install -y \
+    curl \
     git \
     wget \
     vim
@@ -35,20 +36,17 @@ RUN echo 'PATH=$GOPATH/bin:$PATH' >> /root/.bashrc
 #-----------------------------------------------------------------
 
 RUN apt-get install -y \
-    automake \
-    automake1.11 \
-    dpkg-dev \
+    build-essential \
     gcc-mingw-w64-x86-64 \
     libtool
 
 # Cross-compile Oniguruma for mingw in /tmp
 
 WORKDIR /tmp
-RUN apt-get source libonig-dev
-WORKDIR /tmp/libonig-5.9.6
+RUN curl -sLO https://github.com/kkos/oniguruma/releases/download/v5.9.6/onig-5.9.6.tar.gz && \
+    tar xfz onig-5.9.6.tar.gz
+WORKDIR /tmp/onig-5.9.6
 RUN CC=x86_64-w64-mingw32-gcc ./configure --host x86_64-w64-mingw32 --prefix=/usr/x86_64-w64-mingw32
-RUN CC=x86_64-w64-mingw32-gcc make || true
-RUN mv '$(encdir)/.deps' enc
 RUN CC=x86_64-w64-mingw32-gcc make
 RUN CC=x86_64-w64-mingw32-gcc make install
 
@@ -62,11 +60,10 @@ RUN rm -r /tmp/*
 #-----------------------------------------------------------------
 
 WORKDIR /tmp
-RUN apt-get source libonig-dev
-WORKDIR /tmp/libonig-5.9.6
+RUN curl -sLO https://github.com/kkos/oniguruma/releases/download/v5.9.6/onig-5.9.6.tar.gz && \
+    tar xfz onig-5.9.6.tar.gz
+WORKDIR /tmp/onig-5.9.6
 RUN ./configure
-RUN make || true
-RUN mv '$(encdir)/.deps' enc
 RUN make
 RUN make install
 
