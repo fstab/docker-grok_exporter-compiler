@@ -1,7 +1,7 @@
 FROM ubuntu:16.04
 MAINTAINER Fabian Stäber, fabian@fstab.de
 
-ENV LAST_UPDATE=2017-01-29
+ENV LAST_UPDATE=2017-09-22
 
 RUN apt-get update && \
     apt-get upgrade -y
@@ -19,8 +19,8 @@ RUN apt-get install -y \
 # Install golang manually, so we get the latest 1.7 version.
 
 RUN cd /usr/local && \
-    wget -nv https://storage.googleapis.com/golang/go1.7.5.linux-amd64.tar.gz && \
-    tar xfz go1.7.5.linux-amd64.tar.gz
+    wget -nv https://storage.googleapis.com/golang/go1.9.linux-amd64.tar.gz && \
+    tar xfz go1.9.linux-amd64.tar.gz
 
 ENV GOROOT /usr/local/go
 RUN echo 'PATH=$GOROOT/bin:$PATH' >> /root/.bashrc
