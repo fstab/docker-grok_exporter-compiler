@@ -1,16 +1,16 @@
-FROM ubuntu:16.04
+FROM centos:6
 MAINTAINER Fabian Stäber, fabian@fstab.de
 
-ENV LAST_UPDATE=2017-09-22
+ENV LAST_UPDATE=2017-11-03
 
-RUN apt-get update && \
-    apt-get upgrade -y
+RUN yum clean all && \
+    yum update -y
 
 #-----------------------------------------------------------------
 # Go development
 #-----------------------------------------------------------------
 
-RUN apt-get install -y \
+RUN yum install -y \
     curl \
     git \
     wget \
@@ -35,10 +35,11 @@ RUN echo 'PATH=$GOPATH/bin:$PATH' >> /root/.bashrc
 # Create a statically linked Oniguruma library for Windows 64 Bit
 #-----------------------------------------------------------------
 
-RUN apt-get install -y \
-    build-essential \
-    gcc-mingw-w64-x86-64 \
-    libtool
+RUN yum install -y \
+    epel-release
+RUN yum install -y \
+    gcc \
+    mingw64-gcc
 
 # Cross-compile Oniguruma for mingw in /tmp
 
