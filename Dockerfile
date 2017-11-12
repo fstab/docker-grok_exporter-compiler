@@ -1,14 +1,27 @@
 FROM centos:6
 MAINTAINER Fabian Stäber, fabian@fstab.de
 
-ENV LAST_UPDATE=2017-11-03
+#------------------------------------------------------------------------------
+# Why centos:6
+#------------------------------------------------------------------------------
+# With current Linux versions, grok_exporter would require GLIBC_2.14,
+# see output of 'objdump -p grok_exporter'. The reason is a call to memcpy,
+# see output of 'objdump -T grok_exporter | grep GLIBC_2.14'.
+# Centos 6 does not provide GLIBC_2.14. In order to make grok_exporter work on
+# old Linux distributions, we compile it on Centos 6 to make sure it doesn't
+# accidentally require a newer GLIBC version.
+#------------------------------------------------------------------------------
+
+# Edit the LAST_UPDATE variable to force re-run of 'yum update' when building
+# the Docker image
+ENV LAST_UPDATE=2017-11-12
 
 RUN yum clean all && \
     yum update -y
 
-#-----------------------------------------------------------------
+#------------------------------------------------------------------------------
 # Go development
-#-----------------------------------------------------------------
+#------------------------------------------------------------------------------
 
 RUN yum install -y \
     curl \
@@ -31,9 +44,9 @@ ENV GOPATH /root/go
 RUN echo 'GOPATH=$HOME/go' >> /root/.bashrc
 RUN echo 'PATH=$GOPATH/bin:$PATH' >> /root/.bashrc
 
-#-----------------------------------------------------------------
+#------------------------------------------------------------------------------
 # Create a statically linked Oniguruma library for Windows 64 Bit
-#-----------------------------------------------------------------
+#------------------------------------------------------------------------------
 
 RUN yum install -y \
     epel-release
@@ -56,9 +69,9 @@ RUN CC=x86_64-w64-mingw32-gcc make install
 WORKDIR /root
 RUN rm -r /tmp/*
 
-#-----------------------------------------------------------------
+#------------------------------------------------------------------------------
 # Create a statically linked Oniguruma library for Linux 64 Bit
-#-----------------------------------------------------------------
+#------------------------------------------------------------------------------
 
 WORKDIR /tmp
 RUN curl -sLO https://github.com/kkos/oniguruma/releases/download/v5.9.6/onig-5.9.6.tar.gz && \
@@ -73,9 +86,9 @@ RUN make install
 WORKDIR /root
 RUN rm -r /tmp/*
 
-#-----------------------------------------------------------------
+#------------------------------------------------------------------------------
 # Create compile scripts
-#-----------------------------------------------------------------
+#------------------------------------------------------------------------------
 
 # check-if-gopath-available.sh
 
