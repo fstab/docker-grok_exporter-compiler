@@ -4,7 +4,7 @@ MAINTAINER Fabian Stäber, fabian@fstab.de
 #------------------------------------------------------------------------------
 # Why centos:6
 #------------------------------------------------------------------------------
-# With current Linux versions, grok_exporter would require GLIBC_2.14,
+# When compiled on current Linux versions, grok_exporter requires GLIBC_2.14,
 # see output of 'objdump -p grok_exporter'. The reason is a call to memcpy,
 # see output of 'objdump -T grok_exporter | grep GLIBC_2.14'.
 # Centos 6 does not provide GLIBC_2.14. In order to make grok_exporter work on
