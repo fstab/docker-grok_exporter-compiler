@@ -32,8 +32,8 @@ RUN yum install -y \
 # Install golang manually, so we get the latest 1.7 version.
 
 RUN cd /usr/local && \
-    wget -nv https://storage.googleapis.com/golang/go1.9.linux-amd64.tar.gz && \
-    tar xfz go1.9.linux-amd64.tar.gz
+    wget -nv https://redirector.gvt1.com/edgedl/go/go1.9.2.linux-amd64.tar.gz && \
+    tar xfz go1.9.2.linux-amd64.tar.gz
 
 ENV GOROOT /usr/local/go
 RUN echo 'PATH=$GOROOT/bin:$PATH' >> /root/.bashrc
