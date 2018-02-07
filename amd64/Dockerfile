@@ -38,11 +38,11 @@ RUN yum install -y \
 # Install golang manually, so we get the latest version.
 
 RUN cd /usr/local && \
-    curl -sLO https://dl.google.com/go/go1.9.3.linux-amd64.tar.gz && \
-    tar xfz go1.9.3.linux-amd64.tar.gz && \
-    rm go1.9.3.linux-amd64.tar.gz && \
+    curl -sLO https://dl.google.com/go/go1.9.4.linux-amd64.tar.gz && \
+    tar xfz go1.9.4.linux-amd64.tar.gz && \
+    rm go1.9.4.linux-amd64.tar.gz && \
     cd /root && \
-    mkdir -p go/src/github.com/fstab go/bin go/pkg
+    mkdir -p go/bin go/pkg
 
 ENV GOROOT=/usr/local/go \
     GOPATH=/root/go \

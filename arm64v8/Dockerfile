@@ -1,0 +1,66 @@
+FROM arm64v8/ubuntu:16.04
+MAINTAINER Fabian Stäber, fabian@fstab.de
+
+# Edit the LAST_UPDATE variable to force re-run of 'apt-get update' when building
+# the Docker image
+ENV LAST_UPDATE=2018-02-07
+
+RUN apt-get update && apt-get upgrade -y
+
+WORKDIR /root
+
+#------------------------------------------------------------------------------
+# Basic tools
+#------------------------------------------------------------------------------
+
+RUN apt-get install -y \
+    autoconf \
+    build-essential \
+    curl \
+    git \
+    wget \
+    vim
+
+#------------------------------------------------------------------------------
+# Go development
+#------------------------------------------------------------------------------
+
+# Install golang manually, so we get the latest version.
+
+RUN cd /usr/local && \
+    curl -sLO https://dl.google.com/go/go1.9.4.linux-arm64.tar.gz && \
+    tar xfz go1.9.4.linux-arm64.tar.gz && \
+    rm go1.9.4.linux-arm64.tar.gz && \
+    cd /root && \
+    mkdir -p go/bin go/pkg
+
+ENV GOROOT=/usr/local/go \
+    GOPATH=/root/go \
+    PATH=$GOROOT/bin:$PATH \
+    PATH=$GOPATH/bin:$PATH
+
+#------------------------------------------------------------------------------
+# Create a statically linked Oniguruma library for Linux arm64
+#------------------------------------------------------------------------------
+
+# This will create /usr/local/lib/libonig.a
+
+RUN cd /tmp && \
+    curl -sLO https://github.com/kkos/oniguruma/releases/download/v5.9.6/onig-5.9.6.tar.gz && \
+    tar xfz onig-5.9.6.tar.gz && \
+    rm onig-5.9.6.tar.gz && \
+    cd /tmp/onig-5.9.6 && \
+    cp /usr/share/misc/config.guess . && \
+    ./configure && \
+    make && \
+    make install && \
+    cd /root && \
+    rm -r /tmp/onig-5.9.6
+
+#------------------------------------------------------------------------------
+# Create compile scripts
+#------------------------------------------------------------------------------
+
+COPY check-if-gopath-available.sh compile-linux-amd64.sh /root/
+
+CMD /root/check-if-gopath-available.sh && echo "Type 'ls' to see the available compile scripts." && exec /bin/bash
