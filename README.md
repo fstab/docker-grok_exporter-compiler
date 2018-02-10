@@ -10,7 +10,7 @@ To build the image from scratch on an Intel processor, run the following:
 ```bash
 git clone https://github.com/fstab/docker-grok_exporter-compiler.git
 cd docker-grok_exporter-compiler
-docker build -t fstab/grok_exporter-compiler -f Dockerfile.amd64 .
+docker build -t fstab/grok_exporter-compiler-amd64 -f Dockerfile.amd64 .
 ```
 
 To build the image from scratch on an ARM processor (I am using a [Scaleway] server), run the following:
@@ -18,7 +18,7 @@ To build the image from scratch on an ARM processor (I am using a [Scaleway] ser
 ```bash
 git clone https://github.com/fstab/docker-grok_exporter-compiler.git
 cd docker-grok_exporter-compiler
-docker build -t fstab/grok_exporter-compiler -f Dockerfile.arm64v8 .
+docker build -t fstab/grok_exporter-compiler-arm64v8 -f Dockerfile.arm64v8 .
 ```
 
 Example call to build a [grok_exporter] release:
