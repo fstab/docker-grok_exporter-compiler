@@ -61,6 +61,6 @@ RUN cd /tmp && \
 # Create compile scripts
 #------------------------------------------------------------------------------
 
-COPY check-if-gopath-available.sh compile-linux-amd64.sh /root/
+COPY check-if-gopath-available.sh compile-linux.sh /root/
 
 CMD /root/check-if-gopath-available.sh && echo "Type 'ls' to see the available compile scripts." && exec /bin/bash
