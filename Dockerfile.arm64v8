@@ -3,7 +3,7 @@ MAINTAINER Fabian Stäber, fabian@fstab.de
 
 # Edit the LAST_UPDATE variable to force re-run of 'apt-get update' when building
 # the Docker image
-ENV LAST_UPDATE=2018-02-07
+ENV LAST_UPDATE=2018-02-10
 
 RUN apt-get update && apt-get upgrade -y
 
@@ -34,10 +34,10 @@ RUN cd /usr/local && \
     cd /root && \
     mkdir -p go/bin go/pkg
 
-ENV GOROOT=/usr/local/go \
-    GOPATH=/root/go \
-    PATH=$GOROOT/bin:$PATH \
-    PATH=$GOPATH/bin:$PATH
+ENV GOROOT="/usr/local/go" \
+    GOPATH="/root/go"
+ENV PATH="${GOROOT}/bin:${PATH}"
+ENV PATH="${GOPATH}/bin:${PATH}"
 
 #------------------------------------------------------------------------------
 # Create a statically linked Oniguruma library for Linux arm64

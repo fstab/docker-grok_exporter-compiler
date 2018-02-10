@@ -14,7 +14,7 @@ MAINTAINER Fabian Stäber, fabian@fstab.de
 
 # Edit the LAST_UPDATE variable to force re-run of 'yum update' when building
 # the Docker image
-ENV LAST_UPDATE=2018-02-07
+ENV LAST_UPDATE=2018-02-10
 
 RUN yum clean all && \
     yum update -y
@@ -44,10 +44,10 @@ RUN cd /usr/local && \
     cd /root && \
     mkdir -p go/bin go/pkg
 
-ENV GOROOT=/usr/local/go \
-    GOPATH=/root/go \
-    PATH=$GOROOT/bin:$PATH \
-    PATH=$GOPATH/bin:$PATH
+ENV GOROOT="/usr/local/go" \
+    GOPATH="/root/go"
+ENV PATH="${GOROOT}/bin:${PATH}"
+ENV PATH="${GOPATH}/bin:${PATH}"
 
 #------------------------------------------------------------------------------
 # Create a statically linked Oniguruma library for Windows amd64
