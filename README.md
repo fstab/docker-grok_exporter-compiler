@@ -13,12 +13,20 @@ cd docker-grok_exporter-compiler
 docker build -t fstab/grok_exporter-compiler-amd64 -f Dockerfile.amd64 .
 ```
 
-To build the image from scratch on an ARM processor (I am using a [Scaleway] server), run the following:
+To build the image from scratch on an ARM 64 Bit processor (like a [Scaleway] server), run the following:
 
 ```bash
 git clone https://github.com/fstab/docker-grok_exporter-compiler.git
 cd docker-grok_exporter-compiler
 docker build -t fstab/grok_exporter-compiler-arm64v8 -f Dockerfile.arm64v8 .
+```
+
+To build the image from scratch on an ARM 32 Bit processor (like [Raspberry Pi]), run the following:
+
+```bash
+git clone https://github.com/fstab/docker-grok_exporter-compiler.git
+cd docker-grok_exporter-compiler
+docker build -t fstab/grok_exporter-compiler-arm32v7 -f Dockerfile.arm32v7 .
 ```
 
 Example call to build a [grok_exporter] release:
@@ -37,3 +45,4 @@ See [github.com/fstab/grok_exporter](https://github.com/fstab/grok_exporter) for
 [Docker hub]: https://hub.docker.com/r/fstab/grok_exporter-compiler/
 [Github]: https://github.com/fstab/docker-grok_exporter-compiler
 [Scaleway]: https://www.scaleway.com/
+[Raspberry Pi]: https://www.raspberrypi.org/
