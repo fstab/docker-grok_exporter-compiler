@@ -3,7 +3,7 @@ MAINTAINER Fabian Stäber, fabian@fstab.de
 
 # Edit the LAST_UPDATE variable to force re-run of 'apt-get update' when building
 # the Docker image
-ENV LAST_UPDATE=2018-10-06
+ENV LAST_UPDATE=2018-10-08
 
 RUN apt-get update && apt-get upgrade -y
 
