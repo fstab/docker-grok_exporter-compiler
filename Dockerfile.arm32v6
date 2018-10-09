@@ -1,9 +1,9 @@
-FROM arm32v7/ubuntu:18.04
+FROM resin/rpi-raspbian:stretch
 MAINTAINER Fabian Stäber, fabian@fstab.de
 
 # Edit the LAST_UPDATE variable to force re-run of 'apt-get update' when building
 # the Docker image
-ENV LAST_UPDATE=2018-10-08
+ENV LAST_UPDATE=2018-10-09
 
 RUN apt-get update && apt-get upgrade -y
 
@@ -50,7 +50,6 @@ RUN cd /tmp && \
     tar xfz onig-5.9.6.tar.gz && \
     rm onig-5.9.6.tar.gz && \
     cd /tmp/onig-5.9.6 && \
-    cp /usr/share/misc/config.guess . && \
     ./configure && \
     make && \
     make install && \

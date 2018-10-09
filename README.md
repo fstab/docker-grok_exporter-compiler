@@ -26,7 +26,7 @@ To build the image from scratch on an ARM 32 Bit processor (like [Raspberry Pi])
 ```bash
 git clone https://github.com/fstab/docker-grok_exporter-compiler.git
 cd docker-grok_exporter-compiler
-docker build -t fstab/grok_exporter-compiler-arm32v7 -f Dockerfile.arm32v7 .
+docker build -t fstab/grok_exporter-compiler-arm32v6 -f Dockerfile.arm32v6 .
 ```
 
 Example call to build a [grok_exporter] release:
