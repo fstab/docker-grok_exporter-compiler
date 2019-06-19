@@ -45,16 +45,16 @@ ENV PATH="${GOPATH}/bin:${PATH}"
 # This will create /usr/local/lib/libonig.a
 
 RUN cd /tmp && \
-    curl -sLO https://github.com/kkos/oniguruma/releases/download/v5.9.6/onig-5.9.6.tar.gz && \
-    tar xfz onig-5.9.6.tar.gz && \
-    rm onig-5.9.6.tar.gz && \
-    cd /tmp/onig-5.9.6 && \
+    curl -sLO https://github.com/kkos/oniguruma/releases/download/v6.9.2/onig-6.9.2.tar.gz && \
+    tar xfz onig-6.9.2.tar.gz && \
+    rm onig-6.9.2.tar.gz && \
+    cd /tmp/onig-6.9.2 && \
     cp /usr/share/misc/config.guess . && \
     ./configure && \
     make && \
     make install && \
     cd / && \
-    rm -r /tmp/onig-5.9.6
+    rm -r /tmp/onig-6.9.2
 
 #------------------------------------------------------------------------------
 # Create compile scripts
