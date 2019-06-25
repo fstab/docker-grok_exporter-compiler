@@ -3,9 +3,9 @@ MAINTAINER Fabian Stäber, fabian@fstab.de
 
 # Edit the LAST_UPDATE variable to force re-run of 'apt-get update' when building
 # the Docker image
-ENV LAST_UPDATE=2019-04-07
+ENV LAST_UPDATE=2019-06-25
 
-RUN apt-get update && apt-get upgrade -y
+RUN sleep 1 && apt-get update && apt-get upgrade -y
 
 #------------------------------------------------------------------------------
 # Basic tools
@@ -26,9 +26,9 @@ RUN apt-get install -y \
 # Install golang manually, so we get the latest version.
 
 RUN cd /usr/local && \
-    curl --fail -sLO https://dl.google.com/go/go1.12.2.linux-arm64.tar.gz && \
-    tar xfz go1.12.2.linux-arm64.tar.gz && \
-    rm go1.12.2.linux-arm64.tar.gz && \
+    curl --fail -sLO https://dl.google.com/go/go1.12.6.linux-arm64.tar.gz && \
+    tar xfz go1.12.6.linux-arm64.tar.gz && \
+    rm go1.12.6.linux-arm64.tar.gz && \
     cd / && \
     mkdir -p go/bin go/pkg
 
