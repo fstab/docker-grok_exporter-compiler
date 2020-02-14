@@ -14,7 +14,7 @@ MAINTAINER Fabian Stäber, fabian@fstab.de
 
 # Edit the LAST_UPDATE variable to force re-run of 'yum update' when building
 # the Docker image
-ENV LAST_UPDATE=2020-01-05
+ENV LAST_UPDATE=2020-02-14
 
 RUN yum clean all && \
     yum update -y
@@ -36,9 +36,9 @@ RUN yum install -y \
 # Install golang manually, so we get the latest version.
 
 RUN cd /usr/local && \
-    curl --fail -sLO https://dl.google.com/go/go1.13.5.linux-amd64.tar.gz && \
-    tar xfz go1.13.5.linux-amd64.tar.gz && \
-    rm go1.13.5.linux-amd64.tar.gz && \
+    curl --fail -sLO https://dl.google.com/go/go1.13.8.linux-amd64.tar.gz && \
+    tar xfz go1.13.8.linux-amd64.tar.gz && \
+    rm go1.13.8.linux-amd64.tar.gz && \
     cd / && \
     mkdir -p go/bin go/pkg
 
